@@ -40,7 +40,7 @@ export const signIn = async (req: Request, res: Response) => {
                 return;
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 9);
 
         const newUser = new UserModel({
             username,
