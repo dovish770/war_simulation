@@ -5,17 +5,15 @@ import {IResource} from '../../types/organization'
 import { Request, Response } from 'express';
 import {detectId} from "../../service/JWTService"
 
-export const getMissiles = async (req: Request, res: Response) => {
+export const getInterceptors = async (req: Request, res: Response) => {
     try {
         const token = req.headers.authorization;
-        
         
         if (!token) {
             res.status(401).json({ message: "Token missing", success: false });
             return;
         }
         const userId = detectId(token); 
-        console.log(userId);
         const user = await UserModel.findById(userId).select('organization.resources');
         
         if (!user) {
@@ -32,7 +30,7 @@ export const getMissiles = async (req: Request, res: Response) => {
     }
 };
 
-export const getOneMissiles = async (req: Request, res: Response) => {
+export const getOneInterceptor = async (req: Request, res: Response) => {
     const missileName = req.params.missileName;
     try {
         const missile = missiles.find(mis=>mis.name === missileName);

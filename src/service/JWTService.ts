@@ -22,6 +22,5 @@ export const createToken = (user: IUser): string => {
 
 export const detectId = (token:string) => {
     const decoded: any = jwt.verify(token, JWT_SECRET);    
-    console.log(decoded);
     return decoded.userId;
 }
