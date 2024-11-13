@@ -1,5 +1,18 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import IUser from '../../types/user';
+import IOrganization from '../../types/organization';
+
+
+const ResourceSchema = new Schema({
+    name: { type: String, required: true },
+    amount: { type: Number, required: true, default: 0 }
+});
+
+const OrganizationSchema = new Schema<IOrganization>({
+    name: { type: String, required: true },
+    resources: { type: [ResourceSchema], required: true },
+    budget: { type: Number, required: true }
+});
 
 const userSchema: Schema<IUser> = new mongoose.Schema({
     username: {
@@ -16,16 +29,17 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
         minlength: 6,
     },
     organization: {
-        type: String,
-        required: true,
-        enum: ['IDF', 'Hezbollah', 'Hamas', 'IRGC', 'Houthis']
+        type: OrganizationSchema,
+        required: true
     },
-    region: {
-        type: String,
-        enum: ['North', 'South', 'Center', 'West Bank']
+    isDefence: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
+
+export default User;

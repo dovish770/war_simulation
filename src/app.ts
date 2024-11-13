@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDb from "./config/MongoDb";
-
+import ConnectionRouter from "./routes/connection";
+import missiles from "./routes/missiles";
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 7770;
 
 app.use(express.json());
 app.use(cors());
+
+app.use('/war_simulation', ConnectionRouter, missiles)
 
 connectDb();
 

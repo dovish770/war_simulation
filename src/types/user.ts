@@ -1,8 +1,11 @@
-interface IUser extends Document {
-    username: string;
-    password: string;
-    organization: string;
-    region?: string;
-}
+    import IOrganization from "./organization";
 
-export default IUser
+    interface IUser extends Document {
+        _id?:string
+        username: string;
+        password: string;
+        organization: IOrganization;
+        isDefence:boolean
+    }
+
+    export default IUser
