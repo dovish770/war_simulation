@@ -19,10 +19,8 @@ export const getInterceptors = async (req: Request, res: Response) => {
             res.status(404).json({ message: "user not found" });
             return;
         }
-                
-        const currResources:IResource[] = user.organization.resources;
 
-        res.status(200).json({ data: currResources, success: true });
+        res.status(200).json({ data:  user.organization, success: true });
 
     } catch (error:any) {
         res.status(400).json({ message: error.message, success: false });

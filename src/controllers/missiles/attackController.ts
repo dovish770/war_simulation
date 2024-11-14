@@ -23,7 +23,7 @@ export const getMissiles = async (req: Request, res: Response) => {
             return;
         }
         
-        const response = user.isDefence? user.organization: createResponseForAttack(user.organization)        
+        const response = user.isDefence? user.organization : createResponseForAttack(user.organization)        
         res.status(200).json({ data: response, success: true });
 
     } catch (error:any) {
