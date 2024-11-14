@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import UserModel from '../../models/user/UserSchema';
 import { createToken } from '../../service/JWTService';
 
@@ -27,7 +26,7 @@ export const login = async (req: Request, res: Response) => {
                 return;
             } else {
                 const token:string = createToken(user)
-                res.status(200).json({ message: "Logged in successfully", token });
+                res.status(200).json({ message: "Logged in successfully", token:token, user:user });
                 return;
             }
         }

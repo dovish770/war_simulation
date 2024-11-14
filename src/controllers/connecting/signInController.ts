@@ -21,9 +21,9 @@ export const signIn = async (req: Request, res: Response) => {
             return;
         }
 
-        let isDefence;
+        let isDefence = false; 
         let updatedOrganization:string;
-
+        
         if (organization === 'IDF') {
             if (!region) {
                 res.status(400).json({ message: "Required valid region" });
@@ -50,7 +50,7 @@ export const signIn = async (req: Request, res: Response) => {
         });
         
         const addedUser = await UserModel.create(newUser);
-
+        
         res.status(201).json({ data: addedUser, success: true });
 
     } catch (error: any) {

@@ -4,7 +4,7 @@ import { getMissiles, getOneMissiles } from '../controllers/missiles/attackContr
 
 const router = express.Router();
 
-router.get('/attack', getMissiles);
+router.get('/arsenal', getMissiles);
 router.get('/attack/:missileName', getOneMissiles);
 
 export default router;

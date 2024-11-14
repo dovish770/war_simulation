@@ -1,7 +1,8 @@
-import { IResource } from "./organization"
+import IOrganization from "./organization"
+
 interface AttackResponse{
     locations: string[],
-    missiles: IResource[]
+    organization: IOrganization
 }
 
 export default AttackResponse

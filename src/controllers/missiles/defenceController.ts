@@ -1,9 +1,8 @@
 import UserModel from "../../models/user/UserSchema";
-import IMissile from "../../types/missiles";
 import missiles from '../../assets/missiles.json'
 import {IResource} from '../../types/organization'
 import { Request, Response } from 'express';
-import {detectId} from "../../service/JWTService"
+import {detectToken} from "../../service/JWTService"
 
 export const getInterceptors = async (req: Request, res: Response) => {
     try {
@@ -13,8 +12,8 @@ export const getInterceptors = async (req: Request, res: Response) => {
             res.status(401).json({ message: "Token missing", success: false });
             return;
         }
-        const userId = detectId(token); 
-        const user = await UserModel.findById(userId).select('organization.resources');
+        const decodedToken = detectToken(token); 
+        const user = await UserModel.findById(decodedToken.userId).select('organization.resources');
         
         if (!user) {
             res.status(404).json({ message: "user not found" });
@@ -29,6 +28,7 @@ export const getInterceptors = async (req: Request, res: Response) => {
         res.status(400).json({ message: error.message, success: false });
     }
 };
+
 
 export const getOneInterceptor = async (req: Request, res: Response) => {
     const missileName = req.params.missileName;

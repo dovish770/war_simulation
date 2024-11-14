@@ -1,29 +1,29 @@
 import UserModel from "../../models/user/UserSchema";
-import IMissile from "../../types/missiles";
 import missiles from '../../assets/missiles.json'
-import {IResource} from '../../types/organization'
 import { Request, Response } from 'express';
-import {detectId} from "../../service/JWTService"
+import {detectToken} from "../../service/JWTService"
 import {createResponseForAttack} from '../../service/missilesService'
 
 export const getMissiles = async (req: Request, res: Response) => {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
+        console.log(token);
         
         if (!token) {
             res.status(401).json({ message: "Token missing", success: false });
             return;
         }
-        const userId = detectId(token); 
-        const user = await UserModel.findById(userId).select('organization.resources').select('organization.name');
+        const decodedToken = detectToken(token); 
+        console.log(decodedToken);
+        
+        const user = await UserModel.findById(decodedToken.userId).select('organization.resources').select('organization.name');
         
         if (!user) {
             res.status(404).json({ message: "user not found" });
             return;
         }
-                
-        const response = createResponseForAttack(user.organization)
-         
+        
+        const response = user.isDefence? user.organization: createResponseForAttack(user.organization)        
         res.status(200).json({ data: response, success: true });
 
     } catch (error:any) {
