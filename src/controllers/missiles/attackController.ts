@@ -6,16 +6,12 @@ import {createResponseForAttack} from '../../service/missilesService'
 
 export const getMissiles = async (req: Request, res: Response) => {
     try {
-        const token = req.headers.authorization?.split(" ")[1];
-        console.log(token);
-        
+        const token = req.headers.authorization?.split(" ")[1];       
         if (!token) {
             res.status(401).json({ message: "Token missing", success: false });
             return;
         }
-        const decodedToken = detectToken(token); 
-        console.log(decodedToken);
-        
+        const decodedToken = detectToken(token);         
         const user = await UserModel.findById(decodedToken.userId).select('organization.resources').select('organization.name');
         
         if (!user) {

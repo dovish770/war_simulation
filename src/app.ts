@@ -11,13 +11,12 @@ dotenv.config();
 
 
 const app = express();
-const PORT = process.env.PORT || 7770;
+const PORT = 7777;
 
 app.use(express.json());
 app.use(cors());
 
 const server = http.createServer(app);
-
 setupWebSocket(server);
 
 app.use('/war_simulation', ConnectionRouter, defence, attack)
