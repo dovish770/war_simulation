@@ -1,37 +1,31 @@
 import { Server, Socket } from "socket.io";
 
-let io: Server | null = null;
-
-
-export const setupWebSocket = (server: any) => {
-  io = new Server(server, {
+export const setupSocket = (server: any) => {
+  const io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: "http://localhost:5173",
       methods: ["GET", "POST"],
     },
   });
 
   io.on("connection", (socket: Socket) => {
-    console.log(`Client connected: ${socket.id}`);
+    console.log("A user connected");
 
-    socket.on("join_room", (region: string) => {
+    socket.on("joinRoom", (region: string) => {
+      if (io.sockets.adapter.rooms.has(region)) {
+        console.log(`Room ${region} exists, joining...`);
+      } else {
+        console.log(`Room ${region} does not exist, creating...`);
+      }
+
       socket.join(region);
-      console.log(`Client ${socket.id} joined region ${region}`);
-      socket.to(region).emit("notification", `A new soldier has joined ${region}`);
+      console.log(`User joined room: ${region}`);
+
+      socket.emit("roomStatus", `You joined room: ${region}`);
     });
 
     socket.on("disconnect", () => {
-      console.log(`Client disconnected: ${socket.id}`);
+      console.log("User disconnected");
     });
   });
-
-  console.log("socket initialized");
-};
-
-
-export const getSocketInstance = (): Server => {
-  if (!io) {
-    throw new Error("error initializing socket");
-  }
-  return io;
 };
